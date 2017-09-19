@@ -107,6 +107,17 @@ namespace HappyWork
             //throw new NotImplementedException();
         }
 
-        
+        private void settingMenuStripBtn_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void AboutMenuStripBtn_Click(object sender, EventArgs e)
+        {
+            About about = new About();
+            about.Show();
+        }
     }
+
+    
 }

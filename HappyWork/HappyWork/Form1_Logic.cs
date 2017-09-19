@@ -91,6 +91,7 @@ namespace HappyWork
         //输出合同或者补充协议的地址
         private string outputDir = null;
 
+
         //定义一个字典，用来保存所有的内容
         Dictionary<string, DataInfo> dic = new Dictionary<string, DataInfo>();
 
@@ -164,27 +165,86 @@ namespace HappyWork
             textBoxCell.Value = dataInfo.Pure_name;
             row.Cells.Add(textBoxCell);
 
-            switch (dataInfo.Type)
+            if (checkSpecialItem(dataInfo.Pure_name))
             {
-                case DataInfo.DataType.CHECK_BOX:
-                    //定义值类型，即checkbox框
-                    DataGridViewCheckBoxCell checkBoxCell = new DataGridViewCheckBoxCell();
-                    checkBoxCell.Value = false;
-                    row.Cells.Add(checkBoxCell);
-                    break;
-                case DataInfo.DataType.COMBOBOX:
-                    //定义值类型，COMBOBOX
-                    DataGridViewComboBoxCell comboBox = new DataGridViewComboBoxCell();
-                    //ComboBox添加候选项功能尚未实现  ！！！！！！！！！！！！！！！！！！！！
-                    row.Cells.Add(comboBox);
-                    break;
+                //如果是特殊的元素的话，进行特殊处理
+                handleSpecialItem(dataInfo.Pure_name, row);
+            }
+            else
+            {
+                switch (dataInfo.Type)
+                {
+                    case DataInfo.DataType.CHECK_BOX:
+                        //定义值类型，即checkbox框
+                        DataGridViewCheckBoxCell checkBoxCell = new DataGridViewCheckBoxCell();
+                        checkBoxCell.Value = false;
+                        row.Cells.Add(checkBoxCell);
+                        break;
+                    case DataInfo.DataType.COMBOBOX:
+                        //定义值类型，COMBOBOX
+                        DataGridViewComboBoxCell comboBox = new DataGridViewComboBoxCell();
+                        //ComboBox添加候选项功能尚未实现  ！！！！！！！！！！！！！！！！！！！！
+                        row.Cells.Add(comboBox);
+                        break;
+                }
             }
 
-
             mainDataView.Rows.Add(row);
-            //Over
+            
 
          }
 
+        //处理特殊元素的赋值问题
+        private void handleSpecialItem(string pure_name, DataGridViewRow row)
+        {
+            string value = "";
+            var now = DateTime.Now;
+            var afterNow = now.AddDays(3);//注意这个三天后续可以通过设置来进行更改
+            switch (pure_name)
+            {
+                case "年":
+                    value = now.Year.ToString();
+                    break;
+                case "月":
+                    value = now.Month.ToString();
+                    break;
+                case "日":
+                    value = now.Day.ToString();
+                    break;
+                case "销售年":
+                    value = afterNow.Year.ToString();
+                    break;
+                case "销售月":
+                    value = afterNow.Month.ToString();
+                    break;
+                case "销售日":
+                    value = afterNow.Day.ToString();
+                    break;
+
+            }
+            DataGridViewTextBoxCell textBoxCell = new DataGridViewTextBoxCell();
+            textBoxCell.Value = value;
+            row.Cells.Add(textBoxCell);
+
+            //Over
+        }
+
+        //检查是否是特殊元素，目前仅支持时间
+        private bool checkSpecialItem(string pure_name)
+        {
+            var specialItems = new string[]
+            {
+                "年","月","日","销售年","销售月","销售日"
+            };
+            if (specialItems.Contains(pure_name))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            //Over
+        }
     }
 }
