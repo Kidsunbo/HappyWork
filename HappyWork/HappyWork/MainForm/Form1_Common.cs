@@ -8,95 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
+
+/*
+ * 这个文件代表了所有于界面无关的逻辑函数，不包含变量。
+ */
+
 
 namespace HappyWork
 {
     partial class Form1
     {
 
-
-#region 
-    //该区域用于定义一些变量。
-
-        //用于保存数据，其中name为包含修饰符的名称，pure_name为展示给用户的名字
-        class DataInfo
-        {
-            public enum DataType
-            {
-                CHECK_BOX = 1,
-                TEXT,
-                COMBOBOX,
-
-            }
-            public DataType Type = DataType.TEXT;
-            public bool Has_value
-            {
-                get
-                {
-                    return has_value;
-                }
-
-
-            }
-            public string Name
-            {
-                get
-                {
-                    return name;
-                }
-                set
-                {
-                    has_value = true;
-                    name = value;
-                }
-            }
-
-            public string Pure_name
-            {
-                get
-                {
-                    return pure_name;
-                }
-                set
-                {
-                    pure_name = value;
-                }
-            }
-
-            public string Value
-            {
-                get
-                {
-                    return _value;
-                }
-                set
-                {
-                    _value = value;
-                }
-            }
-
-            private string name ="";
-            private string pure_name ="";
-            private bool has_value = false ;
-            private string _value = "";
-             
-
-        }
-
-
-
-        //模板文件的名称列表，包含多个模板文件的全名及地址
-        private string[] templateFiles = null;
-
-        //输出合同或者补充协议的地址
-        private string outputDir = null;
-
-
-        //定义一个字典，用来保存所有的内容
-        Dictionary<string, DataInfo> dic = new Dictionary<string, DataInfo>();
-
-        #endregion
-
+        
         //检查模板文件路径和输出文件的路径是否设置，如果没有设置，将输入框变成红色。
         private bool CheckFilesAndDirSetFinished()
         {
@@ -119,13 +43,42 @@ namespace HappyWork
         }
 
         //第一次点击左侧按钮时进行数据创建
-        private void showValueToDataView()
+        private void showValueToDataView(Func func)
         {
             var dict = DocxCreator.findAll(templateFiles);
             foreach (var i in dict)
-                addToDataView(str: i.Key.ToString());
+                func(str: i.Key.ToString());
             //Over
         }
+
+        //人民币小写转大写
+        private string numToChinese(decimal number)
+        {
+            var s = number.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
+            var d = Regex.Replace(s, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}");
+            var r = Regex.Replace(d, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString());
+            return r;
+        }
+
+
+        //当添加供应商或者修改供应商信息后的事件
+        private void updateAddSupplierInfo(object sender, FormClosedEventArgs e)
+        {
+            if (!Directory.Exists(@".\Resources\xml\information"))
+            {
+                return;
+            }
+            DirectoryInfo info = new DirectoryInfo(@".\Resources\xml\information");
+            var files = info.GetFiles();
+            var temp = dataGVC_dictionary["供方名称"] as DataGridViewComboBoxCell;
+            if (temp == null) return;
+            temp.Items.Clear();
+            foreach (var file in files)
+                temp.Items.Add(file.Name);
+            
+        }
+
+        /*
         //添加每一个数据到View里
         void addToDataView(string str)
         {
@@ -246,5 +199,8 @@ namespace HappyWork
             }
             //Over
         }
+        */
     }
+
+
 }

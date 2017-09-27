@@ -34,11 +34,6 @@ namespace HappyWork
         }
 
 
-        private void mainDataView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void templateFileBtn_Click(object sender, EventArgs e)
         {
             //定义选择模板文件的文件选择窗口
@@ -85,7 +80,6 @@ namespace HappyWork
             //Over
         }
 
-        private bool mainPanelHasValue = false;
         private void checkDataBtn_Click(object sender, EventArgs e)
         {
             //Step1 检查模板文件路径和输出文件的路径是否设置，如果没有设置，将输入框变成红色。
@@ -96,7 +90,14 @@ namespace HappyWork
             //Step2 将模板文件里所有的数据读取出来并展示到DataView里。
             if (!mainPanelHasValue)
             {
-                showValueToDataView();
+                if (this.ContractRadioBtn.Checked)
+                {
+                    ContractMain();
+                }
+                if (this.ComplementRadioBtn.Checked)
+                {
+                    ComplementMain();
+                }
                 mainPanelHasValue = true;
             }
             else //即mainPanel中已经有了数据的情况下
@@ -106,6 +107,7 @@ namespace HappyWork
 
             //throw new NotImplementedException();
         }
+
 
         private void settingMenuStripBtn_Click(object sender, EventArgs e)
         {
@@ -117,6 +119,16 @@ namespace HappyWork
             About about = new About();
             about.Show();
         }
+
+
+        private void AddSupplierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddWinForm addWin = new AddWinForm();
+            addWin.FormClosed += new FormClosedEventHandler(updateAddSupplierInfo);
+            addWin.Show();
+        }
+
+
     }
 
     

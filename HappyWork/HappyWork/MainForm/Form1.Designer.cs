@@ -38,6 +38,8 @@
             this.选项ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingMenuStripBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuStripBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.添加ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddSupplierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.SubmitText_CheckBtn = new System.Windows.Forms.CheckBox();
             this.ComplementRadioBtn = new System.Windows.Forms.RadioButton();
@@ -136,7 +138,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.选项ToolStripMenuItem});
+            this.选项ToolStripMenuItem,
+            this.添加ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(592, 25);
@@ -166,6 +169,22 @@
             this.AboutMenuStripBtn.Size = new System.Drawing.Size(152, 22);
             this.AboutMenuStripBtn.Text = "关于";
             this.AboutMenuStripBtn.Click += new System.EventHandler(this.AboutMenuStripBtn_Click);
+            // 
+            // 添加ToolStripMenuItem
+            // 
+            this.添加ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AddSupplierToolStripMenuItem});
+            this.添加ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("添加ToolStripMenuItem.Image")));
+            this.添加ToolStripMenuItem.Name = "添加ToolStripMenuItem";
+            this.添加ToolStripMenuItem.Size = new System.Drawing.Size(60, 21);
+            this.添加ToolStripMenuItem.Text = "添加";
+            // 
+            // AddSupplierToolStripMenuItem
+            // 
+            this.AddSupplierToolStripMenuItem.Name = "AddSupplierToolStripMenuItem";
+            this.AddSupplierToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AddSupplierToolStripMenuItem.Text = "管理供应商";
+            this.AddSupplierToolStripMenuItem.Click += new System.EventHandler(this.AddSupplierToolStripMenuItem_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -268,7 +287,6 @@
             this.mainDataView.RowTemplate.Height = 23;
             this.mainDataView.Size = new System.Drawing.Size(689, 305);
             this.mainDataView.TabIndex = 1;
-            this.mainDataView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.mainDataView_CellContentClick);
             // 
             // dataName
             // 
@@ -396,6 +414,8 @@
         private System.Windows.Forms.ToolStripMenuItem 选项ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingMenuStripBtn;
         private System.Windows.Forms.ToolStripMenuItem AboutMenuStripBtn;
+        private System.Windows.Forms.ToolStripMenuItem 添加ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AddSupplierToolStripMenuItem;
     }
 }
 
