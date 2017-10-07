@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 
@@ -102,7 +103,20 @@ namespace HappyWork
             }
             else //即mainPanel中已经有了数据的情况下
             {
-                //TO DO...
+                //检查一下是否都赋值了，由用户自己决定是否继续
+                foreach (var i in dataGVC_dictionary)
+                {
+                    if (Convert.ToString(i.Value.Value)=="")
+                    {
+                        var result = MessageBox.Show(this, "\"" + i.Key.ToString() + "\"" + "貌似还没有赋值，是否不管它呢？", "检查到有的地方没有写过", MessageBoxButtons.YesNo);
+                        if(result == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
+                }
+
+                this.StartTask_btn.Enabled = true;
             }
 
             //throw new NotImplementedException();
@@ -128,6 +142,77 @@ namespace HappyWork
             addWin.Show();
         }
 
+        private void StartTask_btn_Click(object sender, EventArgs e)
+        {
+            //制作一份Name：Value词典
+            var finalDic_linq = from pair in dic
+                           from pair2 in dataGVC_dictionary
+                           where pair.Key == pair2.Key
+                           select new { k = pair.Value.Name, v = pair2.Value };
+
+            var finalDic = finalDic_linq.ToDictionary(k=>k.k,v=>v.v);
+
+            foreach(var i in finalDic)
+            {
+                //处理CheckBox的情况
+                if(i.Value is DataGridViewCheckBoxCell)
+                {
+                    bool isChecked =Convert.ToBoolean(i.Value.Value);
+                    var spit_str = i.Key.Trim('{', '}').Split(':', '：');
+                    if (isChecked)
+                    {
+                        if (spit_str.Length == 2) d.Add(i.Key, "");
+                        else if (spit_str.Length >= 3) d.Add(i.Key, spit_str[2]);
+                    }
+                    else
+                    {
+                        if (spit_str.Length == 2 || spit_str.Length == 3) d.Add(i.Key, "");
+                        else if (spit_str.Length >= 4) d.Add(i.Key, spit_str[3]);
+                    }
+                }
+
+                //处理ComboBox的情况
+                else if(i.Value is DataGridViewComboBoxCell)
+                {
+
+                    d.Add(i.Key,Convert.ToString(i.Value.Value));
+                }
+                //处理普通的情况
+                else
+                {
+                    
+                    d.Add(i.Key, Convert.ToString(i.Value.Value));
+                }
+            }
+            this.progressBar.Maximum = d.Count;
+            this.progressBar.Step = 1;
+            //制作完成
+            var t = new Thread(() =>
+            {
+                DocxCreator.Repalce(d, templateFiles, outputDir,updateProgress,this.TrackChange_CheckBox.Checked);
+                //Console.WriteLine(d);
+            });
+            t.Start();
+            if (this.SubmitText_CheckBtn.Checked)
+            {
+                CreateSubmitText(d);
+            }
+            //记录项目信息
+            if(ContractRadioBtn.Checked)
+                recordTheProjectInfo(d);
+            t.Join();
+            if (MessageBox.Show(this, "是否打开生成文件所在文件夹", "是否打开", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
+                psi.Arguments = "/e," + outputDir;
+                System.Diagnostics.Process.Start(psi);
+
+            }
+
+
+
+
+        }
 
     }
 

@@ -29,15 +29,7 @@ namespace HappyWork
 
             }
             public DataType Type = DataType.TEXT;
-            public bool Has_value
-            {
-                get
-                {
-                    return has_value;
-                }
 
-
-            }
             public string Name
             {
                 get
@@ -62,18 +54,6 @@ namespace HappyWork
                 }
             }
 
-            public string Value
-            {
-                get
-                {
-                    return _value;
-                }
-                set
-                {
-                    has_value = true;
-                    _value = value;
-                }
-            }
 
             private string name = "";
             private string pure_name = "";
@@ -99,6 +79,11 @@ namespace HappyWork
         //定义一个字典，用来保存每一个名字对应的空间，Key为Pure_name,Value为DataGridViewCellBox.
         Dictionary<string, DataGridViewCell> dataGVC_dictionary = new Dictionary<string, DataGridViewCell>();
 
+        //最终的字典，用来做替代。名字是Name，即模板中的样子，值是Pure_Name。
+        Dictionary<string,string> d = new Dictionary<string, string>();
+
+        //用来保存ProjectInfo的字典，Key是PureName，Value是对应的值，均为String
+        Dictionary<string, string> project_dic = new Dictionary<string, string>();
 
         //定义一个委托，用来共用一个函数，接收不同的函数分别添加合同和补充协议的变量
         private delegate void Func(string str);

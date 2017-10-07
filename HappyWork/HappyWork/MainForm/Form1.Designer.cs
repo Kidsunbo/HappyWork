@@ -159,14 +159,14 @@
             // settingMenuStripBtn
             // 
             this.settingMenuStripBtn.Name = "settingMenuStripBtn";
-            this.settingMenuStripBtn.Size = new System.Drawing.Size(152, 22);
+            this.settingMenuStripBtn.Size = new System.Drawing.Size(100, 22);
             this.settingMenuStripBtn.Text = "设置";
             this.settingMenuStripBtn.Click += new System.EventHandler(this.settingMenuStripBtn_Click);
             // 
             // AboutMenuStripBtn
             // 
             this.AboutMenuStripBtn.Name = "AboutMenuStripBtn";
-            this.AboutMenuStripBtn.Size = new System.Drawing.Size(152, 22);
+            this.AboutMenuStripBtn.Size = new System.Drawing.Size(100, 22);
             this.AboutMenuStripBtn.Text = "关于";
             this.AboutMenuStripBtn.Click += new System.EventHandler(this.AboutMenuStripBtn_Click);
             // 
@@ -182,7 +182,7 @@
             // AddSupplierToolStripMenuItem
             // 
             this.AddSupplierToolStripMenuItem.Name = "AddSupplierToolStripMenuItem";
-            this.AddSupplierToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AddSupplierToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.AddSupplierToolStripMenuItem.Text = "管理供应商";
             this.AddSupplierToolStripMenuItem.Click += new System.EventHandler(this.AddSupplierToolStripMenuItem_Click);
             // 
@@ -209,6 +209,8 @@
             // SubmitText_CheckBtn
             // 
             this.SubmitText_CheckBtn.AutoSize = true;
+            this.SubmitText_CheckBtn.Checked = true;
+            this.SubmitText_CheckBtn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SubmitText_CheckBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SubmitText_CheckBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SubmitText_CheckBtn.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -350,6 +352,7 @@
             this.StartTask_btn.TabIndex = 1;
             this.StartTask_btn.Text = "开始生成";
             this.StartTask_btn.UseVisualStyleBackColor = true;
+            this.StartTask_btn.Click += new System.EventHandler(this.StartTask_btn_Click);
             // 
             // checkDataBtn
             // 

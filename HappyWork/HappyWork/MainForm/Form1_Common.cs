@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 /*
  * 这个文件代表了所有于界面无关的逻辑函数，不包含变量。
@@ -57,6 +58,10 @@ namespace HappyWork
             var s = number.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
             var d = Regex.Replace(s, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}");
             var r = Regex.Replace(d, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString());
+            if (r.EndsWith("元") || r.EndsWith("角"))
+            {
+                r = r + "整";
+            }
             return r;
         }
 
@@ -64,142 +69,85 @@ namespace HappyWork
         //当添加供应商或者修改供应商信息后的事件
         private void updateAddSupplierInfo(object sender, FormClosedEventArgs e)
         {
-            if (!Directory.Exists(@".\Resources\xml\information"))
+
+            DirectoryInfo info = new DirectoryInfo(@".\Resources\xml\information");
+            if (!info.Exists)
+            {
+                info.Create();
+            }
+
+            var files = info.GetFiles();
+            //对“供方名称”做一个判断，如果不存在，则直接返回，不用添加。
+            if (!dataGVC_dictionary.Keys.Contains("供方名称"))
             {
                 return;
             }
-            DirectoryInfo info = new DirectoryInfo(@".\Resources\xml\information");
-            var files = info.GetFiles();
             var temp = dataGVC_dictionary["供方名称"] as DataGridViewComboBoxCell;
-            if (temp == null) return;
+            if (temp == null) return; 
             temp.Items.Clear();
+            Console.WriteLine(temp.Items.Count);
             foreach (var file in files)
-                temp.Items.Add(file.Name);
+            {
+                temp.Items.Add(Path.GetFileNameWithoutExtension(file.Name));
+            }
+            checkDataBtn.Select();
+
+            Console.WriteLine(temp.Items.Count);
+            
             
         }
 
-        /*
-        //添加每一个数据到View里
-        void addToDataView(string str)
+        //生成呈文
+        private void CreateSubmitText(Dictionary<string, string> d)
         {
-
-            string[] modifiedStr = str.Trim('{', '}').Split(new char[] { ':', '：' }, 2);
-
-            var dataInfo = new DataInfo(); //创建一个DataInfo对象，来保存该行类型的数据'
-
-            //确定展现的类型是CheckBox还是文本
-            switch (modifiedStr[0])
+            FileInfo templateFile = new FileInfo(@".\Resources\template\SubmitText\SubmitText.txt");
+            if (!templateFile.Exists)
             {
-                case "b":
-                    dataInfo.Type = DataInfo.DataType.CHECK_BOX;
-                    break;
-                case "c":
-                    dataInfo.Type = DataInfo.DataType.COMBOBOX;
-                    break;
-                default:
-                    dataInfo.Type = DataInfo.DataType.TEXT;
-                    break;
+                MessageBox.Show(this, "呈文模板不存在，请检查一下", "无法生成呈文", MessageBoxButtons.OK);
+                return;
             }
-            //新建一个对象代表这一行
-            DataGridViewRow row = new DataGridViewRow();
-            dataInfo.Name = str;
-            //当str不带修饰信息的时候
-            if (modifiedStr.Length == 1)
+            try
             {
-                dataInfo.Pure_name = modifiedStr[0];
-            }
 
-            //当str带修饰信息的时候
-            else if (modifiedStr.Length == 2)
-            {
-                dataInfo.Pure_name = modifiedStr[1];
-            }
-            DataGridViewTextBoxCell textBoxCell = new DataGridViewTextBoxCell();
-            textBoxCell.Value = dataInfo.Pure_name;
-            row.Cells.Add(textBoxCell);
-
-            if (checkSpecialItem(dataInfo.Pure_name))
-            {
-                //如果是特殊的元素的话，进行特殊处理
-                handleSpecialItem(dataInfo.Pure_name, row);
-            }
-            else
-            {
-                switch (dataInfo.Type)
+                var content = File.ReadAllText(templateFile.FullName);
+                foreach(var i in d)
                 {
-                    case DataInfo.DataType.CHECK_BOX:
-                        //定义值类型，即checkbox框
-                        DataGridViewCheckBoxCell checkBoxCell = new DataGridViewCheckBoxCell();
-                        checkBoxCell.Value = false;
-                        row.Cells.Add(checkBoxCell);
-                        break;
-                    case DataInfo.DataType.COMBOBOX:
-                        //定义值类型，COMBOBOX
-                        DataGridViewComboBoxCell comboBox = new DataGridViewComboBoxCell();
-                        //ComboBox添加候选项功能尚未实现  ！！！！！！！！！！！！！！！！！！！！
-                        row.Cells.Add(comboBox);
-                        break;
+                    content.Replace(i.Key, i.Value);
                 }
+                File.WriteAllText(outputDir + @"\呈文.txt", content);
+       
             }
-
-            mainDataView.Rows.Add(row);
-            
-
-         }
-
-        //处理特殊元素的赋值问题
-        private void handleSpecialItem(string pure_name, DataGridViewRow row)
-        {
-            string value = "";
-            var now = DateTime.Now;
-            var afterNow = now.AddDays(3);//注意这个三天后续可以通过设置来进行更改
-            switch (pure_name)
+            catch(IOException e)
             {
-                case "年":
-                    value = now.Year.ToString();
-                    break;
-                case "月":
-                    value = now.Month.ToString();
-                    break;
-                case "日":
-                    value = now.Day.ToString();
-                    break;
-                case "销售年":
-                    value = afterNow.Year.ToString();
-                    break;
-                case "销售月":
-                    value = afterNow.Month.ToString();
-                    break;
-                case "销售日":
-                    value = afterNow.Day.ToString();
-                    break;
-
+                MessageBox.Show(this, e.ToString(), "生成呈文出错了", MessageBoxButtons.OK);
             }
-            DataGridViewTextBoxCell textBoxCell = new DataGridViewTextBoxCell();
-            textBoxCell.Value = value;
-            row.Cells.Add(textBoxCell);
 
-            //Over
         }
 
-        //检查是否是特殊元素，目前仅支持时间
-        private bool checkSpecialItem(string pure_name)
+        //刷新ProgressBar
+        private void updateProgress()
         {
-            var specialItems = new string[]
+            if (this.progressBar.InvokeRequired)
             {
-                "年","月","日","销售年","销售月","销售日"
-            };
-            if (specialItems.Contains(pure_name))
-            {
-                return true;
+                this.progressBar.Invoke(new Action(updateProgress));
             }
             else
             {
-                return false;
+                this.progressBar.PerformStep();
             }
-            //Over
         }
-        */
+
+        //通过采购时间计算出补充协议时间
+        private DateTime addTime(DateTime time)
+        {
+            var afterDay = time.AddDays(this.dayBetweenSellAndBuy);
+            while (afterDay.DayOfWeek == DayOfWeek.Saturday || afterDay.DayOfWeek == DayOfWeek.Sunday)
+            {
+                afterDay = afterDay.AddDays(1);
+            }
+            return afterDay;
+        }
+       
     }
 
 

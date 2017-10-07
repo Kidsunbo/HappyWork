@@ -68,7 +68,7 @@ namespace HappyWork
 #endregion
 
         //加入根节点
-        private void addElementToRoot(XmlDocument xml,XmlNode node,string name, string value)
+        public static void addElementToRoot(XmlDocument xml,XmlNode node,string name, string value)
         {
             var tempNode = xml.CreateElement(name);
             tempNode.InnerText = value;
@@ -89,6 +89,7 @@ namespace HappyWork
             {
                 comboBox1.Items.Add(name);
             }
+            
         }
 
         #region 改变Combox的情况(已完成)

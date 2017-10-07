@@ -60,16 +60,10 @@
     <Compile Include="About\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="Add\Add.cs">
+    <Compile Include="Add\AddWinForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Add\Add.Designer.cs">
-      <DependentUpon>Add.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ddd\AddWinForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ddd\AddWinForm.Designer.cs">
+    <Compile Include="Add\AddWinForm.Designer.cs">
       <DependentUpon>AddWinForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Docx\DocxCreator.cs" />
@@ -96,7 +90,7 @@
     <EmbeddedResource Include="About\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ddd\AddWinForm.resx">
+    <EmbeddedResource Include="Add\AddWinForm.resx">
       <DependentUpon>AddWinForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm\Form1.resx">

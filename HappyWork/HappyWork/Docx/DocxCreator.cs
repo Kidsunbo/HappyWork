@@ -5,22 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Novacode;
 using System.IO;
+using System.Windows.Forms;
 
 namespace HappyWork
 {
     static class DocxCreator
     {
+        public delegate void Update();
 
         //替换字符串，需要提供替换字典、文件的名字。
-        public static void Repalce(Dictionary<string,string> dict,string[] files,string outdir,bool trackChange = false)
+        public static void Repalce(Dictionary<string,string> dict,string[] files,string outdir,Update fun,bool trackChange = false)
         {
 
-            foreach(var i in files)
+            foreach (var i in files)
             {
                 using(DocX doc = DocX.Load(i))
                 {
                     foreach(var pair in dict)
                     {
+                        fun();
+                        Console.WriteLine("{0}:{1}",pair.Key,pair.Value);
                         doc.ReplaceText(pair.Key, pair.Value, trackChange, System.Text.RegularExpressions.RegexOptions.Multiline);
                     }
 
