@@ -131,6 +131,7 @@ namespace HappyWork
                 var name = mainDataView.Rows[rowIndex].Cells[0].Value.ToString();
                 if (s.Contains(name))
                 {
+                    //这个switch语句并没有什么卵用
                     switch (name)
                     {
                         case "年":
@@ -143,7 +144,7 @@ namespace HappyWork
                             dataGVC_dictionary["日"] = mainDataView.Rows[rowIndex].Cells[columnIndex];
                             break;
                     }
-                    foreach(var str in s)
+                    foreach (var str in s)
                     {
                         if (dataGVC_dictionary[str].Value == null)
                         {
@@ -154,9 +155,9 @@ namespace HappyWork
                                         int.Parse(dataGVC_dictionary["月"].Value.ToString()),
                                         int.Parse(dataGVC_dictionary["日"].Value.ToString()));
                     var temp =addTime(time);
-                    dataGVC_dictionary["销售年"].Value = temp.Year.ToString();
-                    dataGVC_dictionary["销售月"].Value = temp.Month.ToString();
-                    dataGVC_dictionary["销售日"].Value = temp.Day.ToString();
+                    dataGVC_dictionary["销售年"].Value = temp.ToString("yyyy");
+                    dataGVC_dictionary["销售月"].Value = temp.ToString("MM");
+                    dataGVC_dictionary["销售日"].Value = temp.ToString("dd");
                 }
             }
 
@@ -232,22 +233,22 @@ namespace HappyWork
                 switch (str_without_brace)
                 {
                     case "年":
-                        temp.Value = DateTime.Now.Year.ToString();
+                        temp.Value = DateTime.Now.ToString("yyyy");
                         break;
                     case "月":
-                        temp.Value = DateTime.Now.Month.ToString();
+                        temp.Value = DateTime.Now.ToString("MM");
                         break;
                     case "日":
-                        temp.Value = DateTime.Now.Day.ToString();
+                        temp.Value = DateTime.Now.ToString("dd");
                         break;
                     case "销售年":
                         temp.Value = afterDay.Year.ToString();
                         break;
                     case "销售月":
-                        temp.Value = afterDay.Month.ToString();
+                        temp.Value = afterDay.ToString("MM");
                         break;
                     case "销售日":
-                        temp.Value = afterDay.Day.ToString();
+                        temp.Value = afterDay.ToString("dd");
                         break;
                 }
                 dataGVC_dictionary[str_without_brace] = temp;

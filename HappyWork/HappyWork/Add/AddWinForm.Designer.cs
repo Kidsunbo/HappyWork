@@ -52,11 +52,11 @@
             this.AccountNumTBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.HandOffTimeTBox = new System.Windows.Forms.RichTextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.NewBtn = new System.Windows.Forms.Button();
             this.UpdateBtn = new System.Windows.Forms.Button();
             this.DeleteBtn = new System.Windows.Forms.Button();
+            this.HandOffTimeTBox = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -283,14 +283,6 @@
             this.panel8.Size = new System.Drawing.Size(761, 74);
             this.panel8.TabIndex = 8;
             // 
-            // HandOffTimeTBox
-            // 
-            this.HandOffTimeTBox.Location = new System.Drawing.Point(112, 3);
-            this.HandOffTimeTBox.Name = "HandOffTimeTBox";
-            this.HandOffTimeTBox.Size = new System.Drawing.Size(637, 64);
-            this.HandOffTimeTBox.TabIndex = 1;
-            this.HandOffTimeTBox.Text = "";
-            // 
             // label8
             // 
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -330,6 +322,14 @@
             this.DeleteBtn.Text = "删除";
             this.DeleteBtn.UseVisualStyleBackColor = true;
             this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
+            // 
+            // HandOffTimeTBox
+            // 
+            this.HandOffTimeTBox.Location = new System.Drawing.Point(112, 6);
+            this.HandOffTimeTBox.Multiline = true;
+            this.HandOffTimeTBox.Name = "HandOffTimeTBox";
+            this.HandOffTimeTBox.Size = new System.Drawing.Size(637, 65);
+            this.HandOffTimeTBox.TabIndex = 2;
             // 
             // AddWinForm
             // 
@@ -400,10 +400,10 @@
         private System.Windows.Forms.TextBox AccountNumTBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.RichTextBox HandOffTimeTBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button NewBtn;
         private System.Windows.Forms.Button UpdateBtn;
         private System.Windows.Forms.Button DeleteBtn;
+        private System.Windows.Forms.TextBox HandOffTimeTBox;
     }
 }

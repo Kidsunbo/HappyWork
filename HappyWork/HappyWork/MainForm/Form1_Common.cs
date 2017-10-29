@@ -100,7 +100,14 @@ namespace HappyWork
         //生成呈文
         private void CreateSubmitText(Dictionary<string, string> d)
         {
-            FileInfo templateFile = new FileInfo(@".\Resources\template\SubmitText\SubmitText.txt");
+            FileInfo templateFile;
+            if (ContractRadioBtn.Checked) {
+             templateFile= new FileInfo(@".\Resources\template\SubmitText\合同呈文模板.txt");
+            }
+            else
+            {
+                templateFile = new FileInfo(@".\Resources\template\SubmitText\补充协议呈文模板.txt");
+            }
             if (!templateFile.Exists)
             {
                 MessageBox.Show(this, "呈文模板不存在，请检查一下", "无法生成呈文", MessageBoxButtons.OK);
@@ -109,12 +116,13 @@ namespace HappyWork
             try
             {
 
-                var content = File.ReadAllText(templateFile.FullName);
+                var content = File.ReadAllText(templateFile.FullName,Encoding.Default);
                 foreach(var i in d)
                 {
-                    content.Replace(i.Key, i.Value);
+                   
+                    content = content.Replace(i.Key, i.Value);
                 }
-                File.WriteAllText(outputDir + @"\呈文.txt", content);
+                File.WriteAllText(outputDir + @"\呈文.txt", content,Encoding.Default);
        
             }
             catch(IOException e)
@@ -129,7 +137,7 @@ namespace HappyWork
         {
             if (this.progressBar.InvokeRequired)
             {
-                this.progressBar.Invoke(new Action(updateProgress));
+                this.progressBar.BeginInvoke(new Action(updateProgress));
             }
             else
             {

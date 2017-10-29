@@ -276,7 +276,6 @@
             // 
             this.mainDataView.AllowUserToAddRows = false;
             this.mainDataView.AllowUserToDeleteRows = false;
-            this.mainDataView.AllowUserToResizeColumns = false;
             this.mainDataView.AllowUserToResizeRows = false;
             this.mainDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.mainDataView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {

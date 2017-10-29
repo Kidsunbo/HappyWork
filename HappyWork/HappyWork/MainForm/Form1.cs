@@ -26,7 +26,7 @@ namespace HappyWork
             DirectoryInfo fileInfo = new DirectoryInfo("./Log");
             if (!fileInfo.Exists)
                 fileInfo.Create();
-            using (StreamWriter file = new StreamWriter(@".\Log\Login.txt",true))
+            using (StreamWriter file = new StreamWriter(@".\Log\Login.txt", true))
             {
                 file.WriteLine($"{DateTime.Now.ToString()}用户{Environment.UserName}登入。");
             }
@@ -46,7 +46,7 @@ namespace HappyWork
             fileDialog.ShowDialog();
             //检查是否选择了文件
             var returnValueOfFiles = fileDialog.FileNames;
-            if(returnValueOfFiles.Length == 0)
+            if (returnValueOfFiles.Length == 0)
             {
                 return;
             }
@@ -54,7 +54,7 @@ namespace HappyWork
             templateFiles = fileDialog.FileNames;
             //在展示框中展示文件路径
             StringBuilder tempString = new StringBuilder();
-            foreach(string file in returnValueOfFiles)
+            foreach (string file in returnValueOfFiles)
             {
                 tempString.AppendLine(file);
             }
@@ -106,10 +106,10 @@ namespace HappyWork
                 //检查一下是否都赋值了，由用户自己决定是否继续
                 foreach (var i in dataGVC_dictionary)
                 {
-                    if (Convert.ToString(i.Value.Value)=="")
+                    if (Convert.ToString(i.Value.Value) == "")
                     {
                         var result = MessageBox.Show(this, "\"" + i.Key.ToString() + "\"" + "貌似还没有赋值，是否不管它呢？", "检查到有的地方没有写过", MessageBoxButtons.YesNo);
-                        if(result == DialogResult.No)
+                        if (result == DialogResult.No)
                         {
                             return;
                         }
@@ -119,13 +119,12 @@ namespace HappyWork
                 this.StartTask_btn.Enabled = true;
             }
 
-            //throw new NotImplementedException();
         }
 
 
         private void settingMenuStripBtn_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void AboutMenuStripBtn_Click(object sender, EventArgs e)
@@ -144,20 +143,22 @@ namespace HappyWork
 
         private void StartTask_btn_Click(object sender, EventArgs e)
         {
+
+            d.Clear();
             //制作一份Name：Value词典
             var finalDic_linq = from pair in dic
-                           from pair2 in dataGVC_dictionary
-                           where pair.Key == pair2.Key
-                           select new { k = pair.Value.Name, v = pair2.Value };
+                                from pair2 in dataGVC_dictionary
+                                where pair.Key == pair2.Key
+                                select new { k = pair.Value.Name, v = pair2.Value };
 
-            var finalDic = finalDic_linq.ToDictionary(k=>k.k,v=>v.v);
+            var finalDic = finalDic_linq.ToDictionary(k => k.k, v => v.v);
 
-            foreach(var i in finalDic)
+            foreach (var i in finalDic)
             {
                 //处理CheckBox的情况
-                if(i.Value is DataGridViewCheckBoxCell)
+                if (i.Value is DataGridViewCheckBoxCell)
                 {
-                    bool isChecked =Convert.ToBoolean(i.Value.Value);
+                    bool isChecked = Convert.ToBoolean(i.Value.Value);
                     var spit_str = i.Key.Trim('{', '}').Split(':', '：');
                     if (isChecked)
                     {
@@ -171,16 +172,17 @@ namespace HappyWork
                     }
                 }
 
+
                 //处理ComboBox的情况
-                else if(i.Value is DataGridViewComboBoxCell)
+                else if (i.Value is DataGridViewComboBoxCell)
                 {
 
-                    d.Add(i.Key,Convert.ToString(i.Value.Value));
+                    d.Add(i.Key, Convert.ToString(i.Value.Value));
                 }
                 //处理普通的情况
                 else
                 {
-                    
+
                     d.Add(i.Key, Convert.ToString(i.Value.Value));
                 }
             }
@@ -189,8 +191,8 @@ namespace HappyWork
             //制作完成
             var t = new Thread(() =>
             {
-                DocxCreator.Repalce(d, templateFiles, outputDir,updateProgress,this.TrackChange_CheckBox.Checked);
-                //Console.WriteLine(d);
+                DocxCreator.Repalce(d, templateFiles, outputDir, this.updateProgress, this.TrackChange_CheckBox.Checked);
+
             });
             t.Start();
             if (this.SubmitText_CheckBtn.Checked)
@@ -198,7 +200,7 @@ namespace HappyWork
                 CreateSubmitText(d);
             }
             //记录项目信息
-            if(ContractRadioBtn.Checked)
+            if (ContractRadioBtn.Checked)
                 recordTheProjectInfo(d);
             t.Join();
             if (MessageBox.Show(this, "是否打开生成文件所在文件夹", "是否打开", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -216,5 +218,4 @@ namespace HappyWork
 
     }
 
-    
 }

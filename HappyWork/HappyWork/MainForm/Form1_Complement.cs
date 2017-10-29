@@ -61,6 +61,16 @@ namespace HappyWork
                 dataGVC_dictionary["补销售小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)));
                 dataGVC_dictionary["补销售大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)));
             }
+            if(dataGVC_dictionary.ContainsKey("销售增补小写金额")&& dataGVC_dictionary["销售小写金额"].Value != null && dataGVC_dictionary["补销售小写金额"].Value != null)
+            {
+                dataGVC_dictionary["销售增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value))- Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+                dataGVC_dictionary["销售增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+            }
+            if (dataGVC_dictionary.ContainsKey("采购增补小写金额") && dataGVC_dictionary["采购小写金额"].Value != null && dataGVC_dictionary["补采购小写金额"].Value != null)
+            {
+                dataGVC_dictionary["采购增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                dataGVC_dictionary["采购增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+            }
         }
 
         private void addEventToDateTime_Complement(object sender, DataGridViewCellEventArgs e)
@@ -90,9 +100,9 @@ namespace HappyWork
                                         int.Parse(dataGVC_dictionary["补月"].Value.ToString()),
                                         int.Parse(dataGVC_dictionary["补日"].Value.ToString()));
                     var temp = addTime(time);
-                    dataGVC_dictionary["补销售年"].Value = temp.Year.ToString();
-                    dataGVC_dictionary["补销售月"].Value = temp.Month.ToString();
-                    dataGVC_dictionary["补销售日"].Value = temp.Day.ToString();
+                    dataGVC_dictionary["补销售年"].Value = temp.ToString("yyyy");
+                    dataGVC_dictionary["补销售月"].Value = temp.ToString("MM");
+                    dataGVC_dictionary["补销售日"].Value = temp.ToString("dd");
                 }
             }
 
@@ -201,28 +211,28 @@ namespace HappyWork
             if ((new string[] { "补年", "补月", "补日", "补销售年", "补销售月", "补销售日" }).Contains(str_without_brace))
             {
                 var temp = new DataGridViewTextBoxCell();
-                #region 可以更改为节假日判断
+
                 var afterDay = addTime(DateTime.Now);
-                #endregion
+
                 switch (str_without_brace)
                 {
                     case "补年":
                         temp.Value = DateTime.Now.Year.ToString();
                         break;
                     case "补月":
-                        temp.Value = DateTime.Now.Month.ToString();
+                        temp.Value = DateTime.Now.ToString("MM");
                         break;
                     case "补日":
-                        temp.Value = DateTime.Now.Day.ToString();
+                        temp.Value = DateTime.Now.ToString("dd");
                         break;
                     case "补销售年":
                         temp.Value = afterDay.Year.ToString();
                         break;
                     case "补销售月":
-                        temp.Value = afterDay.Month.ToString();
+                        temp.Value = afterDay.ToString("MM");
                         break;
                     case "补销售日":
-                        temp.Value = afterDay.Day.ToString();
+                        temp.Value = afterDay.ToString("dd");
                         break;
                 }
                 dataGVC_dictionary[str_without_brace] = temp;
