@@ -49,7 +49,20 @@ namespace HappyWork
             var dict = DocxCreator.findAll(templateFiles);
             foreach (var i in dict)
                 func(str: i.Key.ToString());
-            //Over
+
+            //检查特殊变量是否添加，如果没有，则添加上一个dummyValue，即添加一个无用的值，防止报错
+            List<string> specialValue = new List<string> {"年","月","日", "补年", "补月", "补日", "销售年", "销售月", "销售日", "补销售年", "补销售月", "补销售日",
+            "供方名称","销售人","销售电话","品牌名称","账户名称","开户银行","账号","交货时间","采购小写金额","采购大写金额","销售小写金额","销售大写金额",
+            "补采购小写金额","补采购大写金额","补销售小写金额","补销售大写金额","采购增补小写金额","采购增补大写金额","销售增补小写金额","销售增补大写金额","违约金"};
+            foreach (var i in specialValue)
+            {
+                if (!dataGVC_dictionary.ContainsKey(i))
+                {
+                    unusedVar.Add(i);
+                    dataGVC_dictionary.Add(i, new DataGridViewTextBoxCell() { Value = "" });
+                }
+            }
+
         }
 
         //人民币小写转大写

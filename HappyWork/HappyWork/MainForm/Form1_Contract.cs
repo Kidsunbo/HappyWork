@@ -87,7 +87,7 @@ namespace HappyWork
             }
         }
 
-        #region 金钱时间（已完成）
+        #region 金钱事件（已完成）
         private void addEventToMoney(object sender, DataGridViewCellEventArgs e)
         {
             var name = mainDataView.Rows[e.RowIndex].Cells[0].Value.ToString();
@@ -97,6 +97,14 @@ namespace HappyWork
                 {
                     dataGVC_dictionary["采购大写金额"].Value = "";
                     return;
+                }
+                var pVal = Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value));
+                //处理违约金
+                if (pVal >= 0)
+                {
+                    if (pVal <= 1000000) dataGVC_dictionary["违约金"].Value = "2,000.00";
+                    else if (pVal > 1000000 && pVal <= 5000000) dataGVC_dictionary["违约金"].Value = "5,000.00";
+                    else dataGVC_dictionary["违约金"].Value = "20,000.00";
                 }
                 dataGVC_dictionary["采购小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
                 dataGVC_dictionary["采购大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));

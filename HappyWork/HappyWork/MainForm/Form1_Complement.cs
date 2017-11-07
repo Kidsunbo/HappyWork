@@ -40,18 +40,99 @@ namespace HappyWork
         private void addEventToMoney_Complement(object sender, DataGridViewCellEventArgs e)
         {
             var name = mainDataView.Rows[e.RowIndex].Cells[0].Value.ToString();
-            if (name == "补采购小写金额")
+            //if (name == "补采购小写金额")
+            //{
+            //    if (dataGVC_dictionary["补采购小写金额"].Value == null || dataGVC_dictionary["补采购小写金额"].Value.ToString()=="")
+            //    {
+            //        dataGVC_dictionary["补采购大写金额"].Value = "";
+            //        return;
+            //    }
+            //    dataGVC_dictionary["补采购小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)));
+            //    dataGVC_dictionary["补采购大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)));
+
+            //}
+            //if (name == "补销售小写金额")
+            //{
+            //    if (dataGVC_dictionary["补销售小写金额"].Value == null || dataGVC_dictionary["补销售小写金额"].Value.ToString() == "")
+            //    {
+            //        dataGVC_dictionary["补销售大写金额"].Value = "";
+            //        return;
+            //    }
+            //    dataGVC_dictionary["补销售小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)));
+            //    dataGVC_dictionary["补销售大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)));
+            //}
+            //if(dataGVC_dictionary.ContainsKey("销售增补小写金额")&& dataGVC_dictionary["销售小写金额"].Value != null && dataGVC_dictionary["补销售小写金额"].Value != null)
+            //{
+            //    dataGVC_dictionary["销售增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value))- Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+            //    dataGVC_dictionary["销售增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+            //}
+            //if (dataGVC_dictionary.ContainsKey("采购增补小写金额") && dataGVC_dictionary["采购小写金额"].Value != null && dataGVC_dictionary["补采购小写金额"].Value != null)
+            //{
+            //    dataGVC_dictionary["采购增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+            //    dataGVC_dictionary["采购增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+            //}
+
+            //新的做法是“小写金额”、“补小写金额”、“增补小写金额”三者之间，知道两者就可以互相计算。
+            //若三者都知道，优先计算减法，即当三者都提供的时候，更新“小写金额”或者“补小写金额”会计算“增补小写金额”。
+            if (name == "采购小写金额")
+            {
+                if (dataGVC_dictionary["采购小写金额"].Value == null || dataGVC_dictionary["采购小写金额"].Value.ToString() == "")
+                {
+                    dataGVC_dictionary["采购大写金额"].Value = "";
+                    return;
+                }
+                dataGVC_dictionary["采购小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                dataGVC_dictionary["采购大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                if (dataGVC_dictionary["补采购小写金额"].Value != null && dataGVC_dictionary["补采购小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["采购增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                    dataGVC_dictionary["采购增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                }
+                else if (dataGVC_dictionary["采购增补小写金额"].Value != null && dataGVC_dictionary["采购增补小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["补采购小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购增补小写金额"].Value)));
+                    dataGVC_dictionary["补采购大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购增补小写金额"].Value)));
+                }
+
+            }
+            else if (name == "销售小写金额")
+            {
+                if (dataGVC_dictionary["销售小写金额"].Value == null || dataGVC_dictionary["销售小写金额"].Value.ToString() == "")
+                {
+                    dataGVC_dictionary["销售大写金额"].Value = "";
+                    return;
+                }
+                dataGVC_dictionary["销售小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+                dataGVC_dictionary["销售大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                if (dataGVC_dictionary["补销售小写金额"].Value != null && dataGVC_dictionary["补销售小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["销售增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+                    dataGVC_dictionary["销售增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+                }
+                else if (dataGVC_dictionary["销售增补小写金额"].Value != null && dataGVC_dictionary["销售增补小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["补销售小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售增补小写金额"].Value)));
+                    dataGVC_dictionary["补销售大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售增补小写金额"].Value)));
+                }
+            }
+            else if (name == "补采购小写金额")
             {
                 if (dataGVC_dictionary["补采购小写金额"].Value == null || dataGVC_dictionary["补采购小写金额"].Value.ToString()=="")
                 {
                     dataGVC_dictionary["补采购大写金额"].Value = "";
                     return;
-                }
+                   }
                 dataGVC_dictionary["补采购小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)));
                 dataGVC_dictionary["补采购大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)));
 
+                if (dataGVC_dictionary["采购小写金额"].Value != null && dataGVC_dictionary["采购小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["采购增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                    dataGVC_dictionary["采购增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                }
+
             }
-            if (name == "补销售小写金额")
+            else if (name == "补销售小写金额")
             {
                 if (dataGVC_dictionary["补销售小写金额"].Value == null || dataGVC_dictionary["补销售小写金额"].Value.ToString() == "")
                 {
@@ -60,16 +141,44 @@ namespace HappyWork
                 }
                 dataGVC_dictionary["补销售小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)));
                 dataGVC_dictionary["补销售大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)));
+
+                if (dataGVC_dictionary["销售小写金额"].Value != null && dataGVC_dictionary["销售小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["销售增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+                    dataGVC_dictionary["销售增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+                }
             }
-            if(dataGVC_dictionary.ContainsKey("销售增补小写金额")&& dataGVC_dictionary["销售小写金额"].Value != null && dataGVC_dictionary["补销售小写金额"].Value != null)
+            else if (name == "采购增补小写金额")
             {
-                dataGVC_dictionary["销售增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value))- Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
-                dataGVC_dictionary["销售增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补销售小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)));
+                if (dataGVC_dictionary["采购增补小写金额"].Value == null || dataGVC_dictionary["采购增补小写金额"].Value.ToString() == "")
+                {
+                    dataGVC_dictionary["采购增补大写金额"].Value = "";
+                    return;
+                }
+                dataGVC_dictionary["采购增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购增补小写金额"].Value)));
+                dataGVC_dictionary["采购增补大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["采购增补小写金额"].Value)));
+
+                if (dataGVC_dictionary["采购小写金额"].Value != null && dataGVC_dictionary["采购小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["补采购小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购增补小写金额"].Value)));
+                    dataGVC_dictionary["补采购大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购增补小写金额"].Value)));
+                }
             }
-            if (dataGVC_dictionary.ContainsKey("采购增补小写金额") && dataGVC_dictionary["采购小写金额"].Value != null && dataGVC_dictionary["补采购小写金额"].Value != null)
+            else if (name == "销售增补小写金额")
             {
-                dataGVC_dictionary["采购增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
-                dataGVC_dictionary["采购增补大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["补采购小写金额"].Value)) - Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["采购小写金额"].Value)));
+                if (dataGVC_dictionary["销售增补小写金额"].Value == null || dataGVC_dictionary["销售增补小写金额"].Value.ToString() == "")
+                {
+                    dataGVC_dictionary["销售增补大写金额"].Value = "";
+                    return;
+                }
+                dataGVC_dictionary["销售增补小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售增补小写金额"].Value)));
+                dataGVC_dictionary["销售增补大写金额"].Value = numToChinese(decimal.Parse(Convert.ToString(dataGVC_dictionary["销售增补小写金额"].Value)));
+
+                if (dataGVC_dictionary["销售小写金额"].Value != null && dataGVC_dictionary["销售小写金额"].Value.ToString() != "")
+                {
+                    dataGVC_dictionary["补销售小写金额"].Value = string.Format("{0:N2}", Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售增补小写金额"].Value)));
+                    dataGVC_dictionary["补销售大写金额"].Value = numToChinese(Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售小写金额"].Value)) + Convert.ToDecimal(Convert.ToString(dataGVC_dictionary["销售增补小写金额"].Value)));
+                }
             }
         }
 

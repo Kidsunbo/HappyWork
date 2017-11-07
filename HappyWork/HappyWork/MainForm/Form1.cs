@@ -106,7 +106,7 @@ namespace HappyWork
                 //检查一下是否都赋值了，由用户自己决定是否继续
                 foreach (var i in dataGVC_dictionary)
                 {
-                    if (Convert.ToString(i.Value.Value) == "")
+                    if (!unusedVar.Contains(i.Key.ToString()) && Convert.ToString(i.Value.Value) == "")
                     {
                         var result = MessageBox.Show(this, "\"" + i.Key.ToString() + "\"" + "貌似还没有赋值，是否不管它呢？", "检查到有的地方没有写过", MessageBoxButtons.YesNo);
                         if (result == DialogResult.No)

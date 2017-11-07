@@ -85,6 +85,9 @@ namespace HappyWork
         //用来保存ProjectInfo的字典，Key是PureName，Value是对应的值，均为String
         Dictionary<string, string> project_dic = new Dictionary<string, string>();
 
+        //用来保存本次用不到的特殊变量
+        List<string> unusedVar = new List<string>();
+
         //定义一个委托，用来共用一个函数，接收不同的函数分别添加合同和补充协议的变量
         private delegate void Func(string str);
 
